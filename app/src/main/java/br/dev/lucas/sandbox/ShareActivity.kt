@@ -37,15 +37,20 @@ class ShareActivity : AppCompatActivity() {
             setUri(uri.toString())
             setType(intent.type.toString())
             if (intent.type == "text/plain") {
-                try {
-                    contentResolver.openInputStream(uri).use { inputStream ->
-                        val content = inputStream?.bufferedReader()?.readText()
-                        setContent(content.toString())
-                    }
-                } catch (exception: Exception) {
-                    exception.printStackTrace()
-                }
+                val content = readTextContent(uri)
+                setContent(content.toString())
             }
+        }
+    }
+
+    private fun readTextContent(uri: Uri): String? {
+        try {
+            contentResolver.openInputStream(uri).use { inputStream ->
+                return inputStream?.bufferedReader()?.readText()
+            }
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+            return null
         }
     }
 
