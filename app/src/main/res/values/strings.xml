@@ -5,4 +5,5 @@
     <string name="sandbox_share_content">Content</string>
     <string name="read_image">Read image</string>
     <string name="read_file">Read file</string>
+    <string name="read_keystore">Read Key Store</string>
 </resources>

@@ -24,6 +24,12 @@
             android:layout_height="wrap_content"
             android:text="@string/read_file"
             android:onClick="onReadFileClick"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/read_keystore"
+            android:onClick="onReadKeyStoreClick"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
