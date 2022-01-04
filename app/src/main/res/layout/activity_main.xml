@@ -30,6 +30,12 @@
             android:layout_height="wrap_content"
             android:text="@string/read_keystore"
             android:onClick="onReadKeyStoreClick"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/open_camera_activity"
+            android:onClick="onOpenCameraActivityClick"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

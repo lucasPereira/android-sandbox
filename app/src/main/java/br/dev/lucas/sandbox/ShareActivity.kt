@@ -18,17 +18,17 @@ class ShareActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_share)
         title = "Share"
-        log(intent.action)
+        SandboxLogger.debug(intent.action)
         logIntent()
         processIntent()
     }
 
     private fun logIntent() {
-        log("--- logIntent ---")
-        log(intent.action)
-        log(intent.type)
-        log(intent.data)
-        log(intent.getParcelableExtra<Uri>(Intent.EXTRA_STREAM))
+        SandboxLogger.debug("--- logIntent ---")
+        SandboxLogger.debug(intent.action)
+        SandboxLogger.debug(intent.type)
+        SandboxLogger.debug(intent.data)
+        SandboxLogger.debug(intent.getParcelableExtra<Uri>(Intent.EXTRA_STREAM))
     }
 
     private fun processIntent() {
@@ -50,7 +50,7 @@ class ShareActivity : AppCompatActivity() {
     }
 
     private fun queryContent(uri: Uri) {
-        log(" --- queryContent: $uri ---")
+        SandboxLogger.debug(" --- queryContent: $uri ---")
         val cursor = contentResolver.query(uri, null, null, null, null)
         cursor?.let {
             if (cursor.count > 0) {
@@ -59,48 +59,48 @@ class ShareActivity : AppCompatActivity() {
                         val index = cursor.getColumnIndex(name)
                         if (cursor.getType(index) != Cursor.FIELD_TYPE_BLOB) {
                             val value = cursor.getString(index)
-                            log("content[$index] = $name: $value")
+                            SandboxLogger.debug("content[$index] = $name: $value")
                         }
                     }
                 }
             } else {
-                log("there is any row to read")
+                SandboxLogger.debug("there is any row to read")
             }
         }
     }
 
     private fun isFromContacts(uri: Uri) {
-        log(" --- isFromContacts: $uri ---")
-        log("uri authority: ${uri.authority}")
-        log("contacts authority: ${ContactsContract.AUTHORITY}")
-        log("contacts authority uri: ${ContactsContract.AUTHORITY_URI}")
-        log("contacts content uri: ${ContactsContract.Contacts.CONTENT_URI}")
-        log("contacts vcard uri: ${ContactsContract.Contacts.CONTENT_VCARD_URI}")
-        log("contacts multi vcard uri: ${ContactsContract.Contacts.CONTENT_MULTI_VCARD_URI}")
-        log("result: ${ContactsContract.AUTHORITY == uri.authority}")
-        log("has contact permission: ${applicationContext.checkSelfPermission(Manifest.permission.READ_CONTACTS)}")
+        SandboxLogger.debug(" --- isFromContacts: $uri ---")
+        SandboxLogger.debug("uri authority: ${uri.authority}")
+        SandboxLogger.debug("contacts authority: ${ContactsContract.AUTHORITY}")
+        SandboxLogger.debug("contacts authority uri: ${ContactsContract.AUTHORITY_URI}")
+        SandboxLogger.debug("contacts content uri: ${ContactsContract.Contacts.CONTENT_URI}")
+        SandboxLogger.debug("contacts vcard uri: ${ContactsContract.Contacts.CONTENT_VCARD_URI}")
+        SandboxLogger.debug("contacts multi vcard uri: ${ContactsContract.Contacts.CONTENT_MULTI_VCARD_URI}")
+        SandboxLogger.debug("result: ${ContactsContract.AUTHORITY == uri.authority}")
+        SandboxLogger.debug("has contact permission: ${applicationContext.checkSelfPermission(Manifest.permission.READ_CONTACTS)}")
     }
 
     private fun createAndCompareWithUriFromLocalFile(originalUri: Uri) {
-        log(" --- createAndCompareWithUriFromLocalFile: $originalUri ---")
+        SandboxLogger.debug(" --- createAndCompareWithUriFromLocalFile: $originalUri ---")
         val name = getNameFromUri(originalUri)
         val file = generateLocalFile(originalUri, name)
         if (file != null) {
             val localFileUri = Uri.fromFile(file)
-            log("local file: ${file.absolutePath}")
-            log("original uri: $originalUri")
-            log("local file uri: $localFileUri")
-            log("type from content resolver of original uri: ${contentResolver.getType(originalUri)}")
-            log("type from content resolver of local file uri: ${contentResolver.getType(localFileUri)}")
-            log("type from mime map of original uri path: ${MimeTypeMap.getFileExtensionFromUrl(originalUri.path)}")
-            log("type from mime map of local file uri path: ${MimeTypeMap.getFileExtensionFromUrl(localFileUri.path)}")
-            log("extension from mime map of original uri encoded path: ${MimeTypeMap.getFileExtensionFromUrl(originalUri.encodedPath)}")
-            log("extension from mime map of local file uri encoded path: ${MimeTypeMap.getFileExtensionFromUrl(localFileUri.encodedPath)}")
-            log("type intent: ${intent.type}")
-            log("original uri authority: ${originalUri.authority}")
-            log("original uri scheme: ${originalUri.scheme}")
-            log("local file uri authority: ${localFileUri.authority}")
-            log("local file uri scheme: ${localFileUri.scheme}")
+            SandboxLogger.debug("local file: ${file.absolutePath}")
+            SandboxLogger.debug("original uri: $originalUri")
+            SandboxLogger.debug("local file uri: $localFileUri")
+            SandboxLogger.debug("type from content resolver of original uri: ${contentResolver.getType(originalUri)}")
+            SandboxLogger.debug("type from content resolver of local file uri: ${contentResolver.getType(localFileUri)}")
+            SandboxLogger.debug("type from mime map of original uri path: ${MimeTypeMap.getFileExtensionFromUrl(originalUri.path)}")
+            SandboxLogger.debug("type from mime map of local file uri path: ${MimeTypeMap.getFileExtensionFromUrl(localFileUri.path)}")
+            SandboxLogger.debug("extension from mime map of original uri encoded path: ${MimeTypeMap.getFileExtensionFromUrl(originalUri.encodedPath)}")
+            SandboxLogger.debug("extension from mime map of local file uri encoded path: ${MimeTypeMap.getFileExtensionFromUrl(localFileUri.encodedPath)}")
+            SandboxLogger.debug("type intent: ${intent.type}")
+            SandboxLogger.debug("original uri authority: ${originalUri.authority}")
+            SandboxLogger.debug("original uri scheme: ${originalUri.scheme}")
+            SandboxLogger.debug("local file uri authority: ${localFileUri.authority}")
+            SandboxLogger.debug("local file uri scheme: ${localFileUri.scheme}")
             queryContent(localFileUri)
         }
     }
@@ -116,7 +116,7 @@ class ShareActivity : AppCompatActivity() {
                 return file
             }
         } catch (exception: Exception) {
-            log("could not create local file", exception)
+            SandboxLogger.debug("could not create local file", exception)
             return null
         }
     }
@@ -138,7 +138,7 @@ class ShareActivity : AppCompatActivity() {
                 return inputStream?.bufferedReader()?.readText()
             }
         } catch (exception: Exception) {
-            log("could not read text content from file", exception)
+            SandboxLogger.debug("could not read text content from file", exception)
             return null
         }
     }
